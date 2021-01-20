@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/views/SplashScreen.qml</file>
+        <file>assets/fonts/fontawesome.otf</file>
+        <file>assets/images/icons8-user-male-100.png</file>
+        <file>qml/controls/Icon.qml</file>
+        <file>qml/controls/InfoPopup.qml</file>
+        <file>qml/views/HomeScreen.qml</file>
+        <file>qml/delegates/UserDelegate.qml</file>
+        <file>qml/controls/CircularTextField.qml</file>
+        <file>qml/controls/ChartWidget.qml</file>
+        <file>qml/controls/TagAndInput.qml</file>
+        <file>qml/controls/AddPatientPopup.qml</file>
+        <file>qml/controls/IconButton.qml</file>
+    </qresource>
+</RCC>
