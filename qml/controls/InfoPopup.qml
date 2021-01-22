@@ -20,6 +20,7 @@ Popup {
     property alias contactInfo: cInfo.inputText
     property alias therapistName: thName.inputText
     property alias therapistNo: thNo.inputText
+    property bool isStarredUser: false
 
     property alias chart: chart
 
@@ -57,8 +58,33 @@ Popup {
                 anchors.centerIn: parent
             }
 
+            IconButton
+            {
+                height: 40
+                icon: "\uf005"
+                text: isStarredUser? "Unstar User ": "Star User    "
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: sms.left
+                anchors.rightMargin: 20
+
+                onClicked: {
+                    if( dbUpdateRow(patientId, isStarredUser?0:1))
+                    {
+                        isStarredUser = !isStarredUser
+                        console.log("User starred changed!")
+                    }
+
+                    else
+                    {
+                        console.log("User star changing failed!")
+                    }
+                }
+            }
+
             Rectangle
             {
+                id: sms
                 width: 40
                 height: 40
                 color: "green"
@@ -69,7 +95,7 @@ Popup {
                 anchors.rightMargin: 20
 
                 Icon{
-                    icon: "\uf095"
+                    icon: "\uf086"
                     color: "white"
                     size: 20
 

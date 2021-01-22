@@ -124,22 +124,24 @@ Rectangle {
                         t_name: therapistName
                         t_num: therapistNum
                         dt: dateAdded
-                        bpm: lastBpm
-                        edh: lastEdh
+                        bpm: lastBpm + qsTr(" bpm")
+                        edh: lastEdh + qsTr(" µS")
                         isUserStarred: isStarred
+                        dateUpdated: Qt.formatDateTime(new Date(), "ddd, hh:mm.ss AP")
 
-                        onClicked: userDetailsPopup.start(u_name, u_id, u_deviceId, u_contact, t_name, t_num)
+                        onClicked: userDetailsPopup.start(u_name, u_id, u_deviceId, u_contact, t_name, t_num, isUserStarred)
 
                         Timer
                         {
                             id: xTimer
-                            interval: 3500
+                            interval: Math.floor(Math.random()*10000 ) + 2000
                             running: true
                             repeat: true
 
                             onTriggered: {
-                                bpm = userDetailsPopup.chart.shuffleList()["b"]
-                                edh = userDetailsPopup.chart.shuffleList()["c"]
+                                bpm = userDetailsPopup.chart.shuffleList()["b"] + qsTr(" bpm")
+                                edh = userDetailsPopup.chart.shuffleList()["c"] + qsTr(" µS")
+                                dateUpdated = Qt.formatDateTime(new Date(), "ddd, hh:mm.ss AP")
                             }
                         }
 

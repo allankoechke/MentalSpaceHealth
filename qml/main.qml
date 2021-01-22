@@ -34,7 +34,7 @@ Window {
         db.transaction(
                     function(tx) {
                         // Create the database if it doesn't already exist
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS Patient(id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT, p_id TEXT, d_id TEXT, p_contact TEXT, t_name TEXT, t_contact TEXT, date_added TEXT, last_bpm INT, last_edh REAL, starred BOOL)');
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS Patient(id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT, p_id TEXT, d_id TEXT, p_contact TEXT, t_name TEXT, t_contact TEXT, date_added TEXT, last_bpm INT, last_edh REAL, starred INT DEFAULT 0)');
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Data(id INTEGER PRIMARY KEY AUTOINCREMENT, d_id TEXT, data TEXT, date TEXT)');
                     }
                     )
@@ -72,7 +72,7 @@ Window {
     {
         id: infoPopup
 
-        function start(name, pid,did,cif,tnm,tno)
+        function start(name, pid,did,cif,tnm,tno,str)
         {
             infoPopup.open()
 
@@ -83,6 +83,7 @@ Window {
             contactInfo=cif
             therapistName=tnm
             therapistNo=tno
+            isStarredUser=str
 
             // console.log("Data: ",name, pid,did,cif,tnm,tno)
         }
@@ -135,7 +136,7 @@ Window {
         try {
             db.transaction(function (tx) {
                 tx.executeSql('INSERT INTO Patient(p_name,p_id,d_id,p_contact,t_name,t_contact,date_added,last_bpm,last_edh,starred) VALUES(?,?,?,?,?,?,?,?,?,?)',
-                              [userNames,patientId,deviceId,contactInfo,therapistName,therapistNo, Qt.formatDateTime(new Date(), "yyyy-dd-MMThh:mm:ss.zzz"), 0, 0, false])
+                              [userNames,patientId,deviceId,contactInfo,therapistName,therapistNo, Qt.formatDateTime(new Date(), "yyyy-dd-MMThh:mm:ss.zzz"), 0, 0, 0])
 
                 console.log("Added!")
             })
@@ -172,19 +173,21 @@ Window {
                                       dateAdded: results.rows.item(i).date_added,
                                       lastBpm: results.rows.item(i).last_bpm,
                                       lastEdh: results.rows.item(i).last_edh,
-                                      isStarred: results.rows.item(i).starred===0? false:true,
+                                      isStarred: results.rows.item(i).starred===0? false:true
                                   })
+                console.log("Starred: ", results.rows.item(i).starred)
             }
         })
     }
 
     function dbUpdateRow(Prowid, state)
     {
-        var db = dbGetHandle()
+        var db = getDb();
+        console.log("User: ", Prowid, " and State: ", state)
 
         try {
             db.transaction(function (tx) {
-                tx.executeSql('UPDATE Patient SET starred=? WHERE p_id = ?', [Prowid, state])
+                tx.executeSql('UPDATE Patient SET starred=? WHERE p_id = ?', [state, Prowid])
             })
 
             dbReadAll();

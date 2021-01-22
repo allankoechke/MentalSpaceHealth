@@ -23,6 +23,7 @@ Rectangle {
     property string t_name: ""
     property string t_num: ""
     property string dt
+    property alias dateUpdated: dt_upt.text
 
     RowLayout
     {
@@ -67,6 +68,19 @@ Rectangle {
             id: bpm_
             text: b_ + "bpm"
             font.pixelSize: 17
+            color: Qt.darker("white", 1.3)
+
+            Layout.preferredWidth: 150
+            Layout.fillHeight: true
+            horizontalAlignment: Text.ALignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Text {
+            id: dt_upt
+            text: Qt.formatDateTime(new Date(), "ddd, hh:mm.ss AP")
+            font.pixelSize: 17
+            font.italic: true
             color: Qt.darker("white", 1.3)
 
             Layout.preferredWidth: 150
